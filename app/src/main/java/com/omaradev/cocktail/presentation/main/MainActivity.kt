@@ -1,5 +1,6 @@
 package com.omaradev.cocktail.presentation.main
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,9 +21,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.omaradev.cocktail.R
+import com.omaradev.cocktail.data.repository.CocktailRepositoryImpl
 import com.omaradev.cocktail.domain.model.Game
 import com.omaradev.cocktail.domain.model.Question
 import com.omaradev.cocktail.presentation.main.viewmodel.MainViewModel
+import com.omaradev.cocktail.presentation.main.viewmodel.MainViewModelFactory
 import com.omaradev.cocktail.presentation.ui.theme.CocktailTheme
 
 class MainActivity : ComponentActivity() {
@@ -37,12 +40,15 @@ class MainActivity : ComponentActivity() {
     )
     private val game = Game(questions)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CocktailTheme {
-                val viewModel: MainViewModel by viewModels<MainViewModel>()
+                val sharedPreferences =
+                    LocalContext.current.getSharedPreferences("Game", Context.MODE_PRIVATE)
+                val viewModel: MainViewModel by viewModels {
+                    MainViewModelFactory(CocktailRepositoryImpl(sharedPreferences))
+                }
                 viewModel.setGame(game)
                 QuestionsScreen(viewModel)
             }
@@ -53,6 +59,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun QuestionsScreen(viewModel: MainViewModel) {
     var gameState by remember { mutableStateOf(GameState(viewModel.getFirstQuestion())) }
+    gameState.highScore = viewModel.getHighScore().toString()
     var context = LocalContext.current
 
     Column(Modifier.background(Color.White)) {
@@ -144,7 +151,7 @@ fun QuestionsScreen(viewModel: MainViewModel) {
 
 data class GameState(
     val question: Question,
-    val highScore: String = "0",
+    var highScore: String = "0",
     val currentScore: String = "0",
     val answer: String = "",
     val answerOneIsSelected: Boolean = false,

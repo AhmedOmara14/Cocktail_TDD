@@ -2,16 +2,17 @@ package com.omaradev.cocktail.presentation.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.omaradev.cocktail.data.repository.CocktailRepositoryImpl
 import com.omaradev.cocktail.domain.model.Game
 import com.omaradev.cocktail.domain.model.Question
 import com.omaradev.cocktail.domain.model.Score
+import com.omaradev.cocktail.domain.repository.CocktailRepository
 
-class MainViewModel() : ViewModel() {
+class MainViewModel(private val repository: CocktailRepository) : ViewModel() {
+
+    private lateinit var game: Game
     private val errorLiveData = MutableLiveData<Boolean>()
     val questionLiveData = MutableLiveData<Question>()
     val scoreLiveData = MutableLiveData<Score>()
-    private lateinit var game: Game
 
     fun setGame(game: Game) {
         this.game = game
@@ -35,12 +36,26 @@ class MainViewModel() : ViewModel() {
     }
 
     fun answer(question: Question, answer: String) {
-        game.answer(question, answer)
-        scoreLiveData.value = game.score
+        game.answer(question, answer, highScore = getHighScore()) {
+            scoreLiveData.value = game.score
+            saveHighScore(game.score.highScore)
+        }
     }
 
     fun isLastIndex() =
         game.isLastIndex()
 
+    private fun saveHighScore(score: Int) {
+        if (scoreLiveData.value?.saveHighScore == true)
+            repository.saveScore(score)
+    }
 
+    fun getHighScore(): Int {
+        scoreLiveData.value?.let {
+            return it.highScore
+        } ?: kotlin.run {
+            scoreLiveData.value?.highScore = repository.getScore()
+            return repository.getScore()
+        }
+    }
 }

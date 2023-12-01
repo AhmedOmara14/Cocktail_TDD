@@ -19,7 +19,7 @@ class GameTest {
         val game = Game(listOf(question),score)
         question.correctQuestion = "CorrectAnswer"
 
-        game.answer(question,"CorrectAnswer")
+        game.answer(question,"CorrectAnswer"){}
 
         verify(question).answeredQuestion = "CorrectAnswer"
     }

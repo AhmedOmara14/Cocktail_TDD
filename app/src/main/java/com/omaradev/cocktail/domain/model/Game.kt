@@ -2,10 +2,17 @@ package com.omaradev.cocktail.domain.model
 
 class Game(var questions: List<Question>, var score: Score = Score()) {
     private var questionIndex = 0
-    fun answer(question: Question, option: String) {
+    fun answer(
+        question: Question,
+        option: String,
+        highScore: Int? = null,
+        handleScore: () -> Unit?,
+    ) {
         question.answeredQuestion = option
         if (question.answer()) {
+            score.highScore = highScore ?: 0
             score.incrementScore()
+            handleScore()
         }
     }
 
@@ -20,5 +27,4 @@ class Game(var questions: List<Question>, var score: Score = Score()) {
     }
 
     fun getFirstQuestion() = questions[0]
-
 }
