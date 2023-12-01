@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Cocktail</string>
+    <string name="game_title">Game</string>
+    <string name="high_score">High Score</string>
+    <string name="current_score">Current Score</string>
+    <string name="select_answer_warning">Please Select Answer</string>
+    <string name="confirm">Confirm</string>
 </resources>
