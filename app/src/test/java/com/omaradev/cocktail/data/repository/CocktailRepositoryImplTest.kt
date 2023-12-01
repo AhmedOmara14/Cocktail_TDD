@@ -7,7 +7,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
 import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
@@ -36,5 +38,12 @@ class CocktailRepositoryImplTest {
             verify(sharedPreferencesEditor).putInt("HIGH_SCORE", highScore)
             verify(sharedPreferencesEditor).apply()
         }
+    }
+
+    @Test
+    fun getHighScore_thatSavedFromSharedPreference() {
+        repository.getScore()
+
+        verify(sharedPreferences).getInt(any(), any())
     }
 }

@@ -10,4 +10,8 @@ class CocktailRepositoryImpl(private val sharedPreferences: SharedPreferences) :
         editor.putInt(highScoreKey, score)
         editor.apply()
     }
+
+    override fun getScore() {
+        TODO("Not yet implemented")
+    }
 }
