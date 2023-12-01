@@ -44,10 +44,12 @@ class MainViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = MainViewModel(repository)
+        viewModel = MainViewModel()
         viewModel.getError().observeForever(errorObserver)
         viewModel.getQuestion().observeForever(questionObserver)
         viewModel.getScore().observeForever(scoreObserver)
+
+        viewModel.setGame(game)
     }
 
     @Test
@@ -64,7 +66,7 @@ class MainViewModelTest {
         whenever(game.getFirstQuestion())
             .thenReturn(q1)
 
-        viewModel.getFirstQuestion(game)
+        viewModel.getFirstQuestion()
 
         verify(questionObserver).onChanged(eq(q1))
     }
@@ -76,7 +78,7 @@ class MainViewModelTest {
         whenever(game.nextQuestion())
             .thenReturn(q1)
 
-        viewModel.nextQuestion(game)
+        viewModel.nextQuestion()
 
         verify(questionObserver).onChanged(eq(q1))
     }

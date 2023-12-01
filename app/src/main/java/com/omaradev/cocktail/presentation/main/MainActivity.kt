@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.omaradev.cocktail.R
 import com.omaradev.cocktail.domain.model.Game
 import com.omaradev.cocktail.domain.model.Question
+import com.omaradev.cocktail.presentation.main.viewmodel.MainViewModel
 import com.omaradev.cocktail.presentation.ui.theme.CocktailTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,19 +37,22 @@ class MainActivity : ComponentActivity() {
     )
     private val game = Game(questions)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CocktailTheme {
-                QuestionsScreen(game)
+                val viewModel: MainViewModel by viewModels<MainViewModel>()
+                viewModel.setGame(game)
+                QuestionsScreen(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun QuestionsScreen(game: Game) {
-    var gameState by remember { mutableStateOf(GameState(game.getFirstQuestion())) }
+fun QuestionsScreen(viewModel: MainViewModel) {
+    var gameState by remember { mutableStateOf(GameState(viewModel.getFirstQuestion())) }
     var context = LocalContext.current
 
     Column(Modifier.background(Color.White)) {
@@ -101,19 +106,21 @@ fun QuestionsScreen(game: Game) {
 
         Button(
             onClick = {
-                if (game.isLastIndex().not()) {
+                if (viewModel.isLastIndex().not()) {
                     if (gameState.answer.isBlank()) {
                         Toast.makeText(context, "Please Select Answer", Toast.LENGTH_SHORT).show()
                     } else {
-                        game.answer(gameState.question, gameState.answer)
+                        viewModel.answer(gameState.question, gameState.answer)
 
-                        game.nextQuestion()?.let {
+                        viewModel.nextQuestion()
+
+                        viewModel.questionLiveData.value?.let {
                             gameState = gameState.copy(question = it)
                         }
 
                         gameState = gameState.copy(
-                            currentScore = game.score.currentScore.toString(),
-                            highScore = game.score.highScore.toString(),
+                            currentScore = viewModel.scoreLiveData.value?.currentScore.toString(),
+                            highScore = viewModel.scoreLiveData.value?.highScore.toString(),
                             answerOneIsSelected = false,
                             answerTwoIsSelected = false,
                             answer = ""
