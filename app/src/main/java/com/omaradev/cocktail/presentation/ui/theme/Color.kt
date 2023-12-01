@@ -1,4 +1,4 @@
-package com.omaradev.cocktail.ui.theme
+package com.omaradev.cocktail.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
