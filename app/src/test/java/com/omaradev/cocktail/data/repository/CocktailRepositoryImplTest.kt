@@ -42,6 +42,9 @@ class CocktailRepositoryImplTest {
 
     @Test
     fun getHighScore_thatSavedFromSharedPreference() {
+        val highScore = 100
+        whenever(sharedPreferences.getInt("HIGH_SCORE", 0)).thenReturn(highScore)
+
         repository.getScore()
 
         verify(sharedPreferences).getInt(any(), any())
