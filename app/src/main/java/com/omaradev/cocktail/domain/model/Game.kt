@@ -6,13 +6,13 @@ class Game(var questions: List<Question>, var score: Score = Score()) {
         question: Question,
         option: String,
         highScore: Int? = null,
-        handleScore: () -> Unit?,
+        handleScore: (() -> Unit)?= null,
     ) {
         question.answeredQuestion = option
         if (question.answer()) {
             score.highScore = highScore ?: 0
             score.incrementScore()
-            handleScore()
+            handleScore?.invoke()
         }
     }
 

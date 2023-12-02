@@ -2,10 +2,12 @@ package com.omaradev.cocktail.data.repository
 
 import android.content.SharedPreferences
 import com.omaradev.cocktail.domain.repository.CocktailRepository
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.inOrder
@@ -20,7 +22,6 @@ class CocktailRepositoryImplTest {
     @Mock
     private lateinit var sharedPreferencesEditor: SharedPreferences.Editor
 
-    @Mock
     private lateinit var repository: CocktailRepository
 
     @Before
@@ -48,5 +49,10 @@ class CocktailRepositoryImplTest {
         repository.getScore()
 
         verify(sharedPreferences).getInt(any(), any())
+    }
+
+    @After
+    fun tearsDown(){
+        Mockito.clearAllCaches()
     }
 }
