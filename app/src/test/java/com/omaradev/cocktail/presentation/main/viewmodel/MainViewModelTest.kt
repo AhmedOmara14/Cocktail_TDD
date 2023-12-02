@@ -27,6 +27,7 @@ class MainViewModelTest {
     @Mock
     private lateinit var repository: CocktailRepository
 
+    @Mock
     private lateinit var viewModel: MainViewModel
 
     @Mock
