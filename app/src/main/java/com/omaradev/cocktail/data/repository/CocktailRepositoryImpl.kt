@@ -26,9 +26,7 @@ class CocktailRepositoryImpl(
         cocktailDao?.saveQuestion(question)
     }
 
-    override fun getAllQuestions(): LiveData<List<Question>> {
-        TODO("Not yet implemented")
-    }
+    override fun getAllQuestions(): LiveData<List<Question>>? =cocktailDao?.getAllQuestions()
 
 
 }

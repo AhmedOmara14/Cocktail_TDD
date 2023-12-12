@@ -59,9 +59,7 @@ open class MainViewModel(private val repository: CocktailRepository) : ViewModel
         }
     }
 
-    fun getAllQuestions(): LiveData<List<Question>> {
-        TODO("GET ALL QUESTIONS")
-    }
+    fun getAllQuestions(): LiveData<List<Question>>? = repository.getAllQuestions()
 
     fun saveQuestion(question: Question) {
         repository.saveQuestion(question)

@@ -16,7 +16,6 @@ open class CocktailDaoImpl : CocktailDao {
         questions.postValue(questions.value?.toMutableList()?.plus(question) ?: emptyList())
     }
 
-    override fun getAllQuestions(): LiveData<List<Question>> {
-        TODO("Not yet implemented")
-    }
+    override fun getAllQuestions(): LiveData<List<Question>> = questions
+
 }

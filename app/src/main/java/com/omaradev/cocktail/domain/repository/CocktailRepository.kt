@@ -7,5 +7,5 @@ interface CocktailRepository {
     fun saveScore(score: Int)
     fun getScore(): Int
     fun saveQuestion(question: Question)
-    fun getAllQuestions(): LiveData<List<Question>>
+    fun getAllQuestions(): LiveData<List<Question>>?
 }
