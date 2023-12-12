@@ -25,8 +25,9 @@ class MainViewModelTest {
     @Test
     fun testSaveQuestion() {
         val question = mock<Question>()
-
-        viewModel.saveQuestion(question)
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            viewModel.saveQuestion(question)
+        }
 
         verify(cocktailDao).saveQuestion(any())
     }
@@ -38,9 +39,9 @@ class MainViewModelTest {
             correctQuestion = "Correct Ans",
             inCorrectQuestion = "InCorrect Ans",
         )
-
-        cocktailDao.saveQuestion(mockQuestion)
-
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            cocktailDao.saveQuestion(mockQuestion)
+        }
         val mockObserver = mock<Observer<List<Question>>>()
 
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
@@ -48,6 +49,5 @@ class MainViewModelTest {
         }
 
         verify(mockObserver).onChanged(listOf(mockQuestion))
-
     }
 }

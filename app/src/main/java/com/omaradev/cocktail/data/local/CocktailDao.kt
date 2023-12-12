@@ -12,8 +12,11 @@ interface CocktailDao {
 
 open class CocktailDaoImpl : CocktailDao {
     private val questions: MutableLiveData<List<Question>> = MutableLiveData(emptyList())
+    private val questionsList: ArrayList<Question> = arrayListOf()
+
     override fun saveQuestion(question: Question) {
-        questions.postValue(questions.value?.toMutableList()?.plus(question) ?: emptyList())
+        questionsList.add(question)
+        questions.value = (questionsList)
     }
 
     override fun getAllQuestions(): LiveData<List<Question>> = questions

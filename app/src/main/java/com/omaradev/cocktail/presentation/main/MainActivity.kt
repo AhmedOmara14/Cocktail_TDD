@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.omaradev.cocktail.R
+import com.omaradev.cocktail.data.local.CocktailDao
+import com.omaradev.cocktail.data.local.CocktailDaoImpl
 import com.omaradev.cocktail.data.repository.CocktailRepositoryImpl
 import com.omaradev.cocktail.domain.model.Game
 import com.omaradev.cocktail.domain.model.Question
@@ -38,23 +41,37 @@ class MainActivity : ComponentActivity() {
         Question("A6", "B6", "Question Six ?"),
         Question("A7", "B7", "Question Seven ?"),
     )
-    private val game = Game(questions)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CocktailTheme {
                 val sharedPreferences =
                     LocalContext.current.getSharedPreferences("Game", Context.MODE_PRIVATE)
-                sharedPreferences?.let {
-                    val viewModel: MainViewModel by viewModels {
-                        MainViewModelFactory(CocktailRepositoryImpl(it,null))
-                    }
-                    viewModel.setGame(game)
-                    QuestionsScreen(viewModel)
+                val dao: CocktailDao = CocktailDaoImpl()
+
+                val viewModel: MainViewModel by viewModels {
+                    MainViewModelFactory(CocktailRepositoryImpl(sharedPreferences, dao))
                 }
 
+                saveQuestionsToLocalDB(viewModel)
+
+                viewModel.getAllQuestions()?.let {
+                    val questions by it.observeAsState(initial = emptyList())
+                    Game(questions = questions).let { game ->
+                        viewModel.setGame(game = game)
+                    }
+                }
+
+                QuestionsScreen(viewModel)
             }
+        }
+    }
+
+    private fun saveQuestionsToLocalDB(viewModel: MainViewModel) {
+        questions.forEach { question ->
+            viewModel.saveQuestion(question)
         }
     }
 }
@@ -63,7 +80,7 @@ class MainActivity : ComponentActivity() {
 fun QuestionsScreen(viewModel: MainViewModel) {
     var gameState by remember { mutableStateOf(GameState(viewModel.getFirstQuestion())) }
     gameState.highScore = viewModel.getHighScore().toString()
-    var context = LocalContext.current
+    val context = LocalContext.current
 
     Column(Modifier.background(Color.White)) {
         Text(
