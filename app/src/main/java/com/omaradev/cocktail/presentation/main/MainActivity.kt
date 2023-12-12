@@ -46,11 +46,14 @@ class MainActivity : ComponentActivity() {
             CocktailTheme {
                 val sharedPreferences =
                     LocalContext.current.getSharedPreferences("Game", Context.MODE_PRIVATE)
-                val viewModel: MainViewModel by viewModels {
-                    MainViewModelFactory(CocktailRepositoryImpl(sharedPreferences))
+                sharedPreferences?.let {
+                    val viewModel: MainViewModel by viewModels {
+                        MainViewModelFactory(CocktailRepositoryImpl(it,null))
+                    }
+                    viewModel.setGame(game)
+                    QuestionsScreen(viewModel)
                 }
-                viewModel.setGame(game)
-                QuestionsScreen(viewModel)
+
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.omaradev.cocktail.presentation.main.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.omaradev.cocktail.domain.model.Game
@@ -7,8 +8,7 @@ import com.omaradev.cocktail.domain.model.Question
 import com.omaradev.cocktail.domain.model.Score
 import com.omaradev.cocktail.domain.repository.CocktailRepository
 
-class MainViewModel(private val repository: CocktailRepository) : ViewModel() {
-
+open class MainViewModel(private val repository: CocktailRepository) : ViewModel() {
     private lateinit var game: Game
     private val errorLiveData = MutableLiveData<Boolean>()
     val questionLiveData = MutableLiveData<Question>()
@@ -57,5 +57,13 @@ class MainViewModel(private val repository: CocktailRepository) : ViewModel() {
             scoreLiveData.value?.highScore = repository.getScore()
             return repository.getScore()
         }
+    }
+
+    fun getAllQuestions(): LiveData<List<Question>> {
+        TODO("GET ALL QUESTIONS")
+    }
+
+    fun saveQuestion(question: Question) {
+        repository.saveQuestion(question)
     }
 }

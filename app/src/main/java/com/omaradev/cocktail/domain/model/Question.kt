@@ -1,6 +1,6 @@
 package com.omaradev.cocktail.domain.model
 
-class Question(
+open class Question(
     var correctQuestion: String,
     val inCorrectQuestion: String,
     val question: String
