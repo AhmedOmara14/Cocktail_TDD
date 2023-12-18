@@ -8,7 +8,7 @@ import com.omaradev.cocktail.domain.repository.CocktailRepository
 
 class CocktailRepositoryImpl(
     private val sharedPreferences: SharedPreferences?,
-    private val cocktailDao: CocktailDao?
+    private val cocktailDao: CocktailDao?=null
 ) : CocktailRepository {
     private val highScoreKey = "HIGH_SCORE"
     override fun saveScore(score: Int) {
