@@ -86,3 +86,40 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 }
+
+tasks.register("addSpaceToEndOfLines") {
+    description = "Add space to the end of each line in .kt files and commit changes to Git"
+
+    doLast {
+        // Set the directory containing Kotlin files
+        val kotlinDir = file("src/main/kotlin")
+
+        // Get all .kt files in the directory
+        val kotlinFiles = fileTree(kotlinDir).matching { include("**/*.kt") }
+
+        // Iterate over each Kotlin file
+        for (file in kotlinFiles) {
+            // Read the content of the Kotlin file
+            val originalContent = file.readText()
+
+            // Add a space to the end of each line
+            val modifiedContent = originalContent.replace(Regex("$"), " ")
+
+            // Write the modified content back to the same file
+            file.writeText(modifiedContent)
+        }
+
+        // Git commands to add, commit, and push changes
+        project.exec {
+            commandLine("git", "add", ".")
+        }
+
+        project.exec {
+            commandLine("git", "commit", "-m", "Add space to end of lines")
+        }
+
+        project.exec {
+            commandLine("git", "push")
+        }
+    }
+}
