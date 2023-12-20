@@ -27,7 +27,7 @@ class CocktailRepositoryImplTest {
     @Before
     fun setUp() {
         whenever(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor)
-        repository = CocktailRepositoryImpl(sharedPreferences)
+        repository = CocktailRepositoryImpl(sharedPreferences,null)
     }
 
     @Test
