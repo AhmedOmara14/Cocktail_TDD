@@ -33,13 +33,13 @@ import com.omaradev.cocktail.presentation.ui.theme.CocktailTheme
 
 class MainActivity : ComponentActivity() {
     private val questions = listOf(
-        Question("A1", "B1", "Question One ?"),
-        Question("A2", "B2", "Question Two ?"),
-        Question("A3", "B3", "Question Three ?"),
-        Question("A4", "B4", "Question Four ?"),
-        Question("A5", "B5", "Question Five ?"),
-        Question("A6", "B6", "Question Six ?"),
-        Question("A7", "B7", "Question Seven ?"),
+        Question(question = "A1", correctQuestion = "B1", inCorrectQuestion =  "Question One ?"),
+        Question(question = "A2", correctQuestion = "B2", inCorrectQuestion =  "Question Two ?"),
+        Question(question = "A3", correctQuestion = "B3", inCorrectQuestion =  "Question Three ?"),
+        Question(question = "A4", correctQuestion = "B4", inCorrectQuestion =  "Question Four ?"),
+        Question(question = "A5", correctQuestion = "B5", inCorrectQuestion =  "Question Five ?"),
+        Question(question = "A6", correctQuestion = "B6", inCorrectQuestion =  "Question Six ?"),
+        Question(question = "A7", correctQuestion = "B7", inCorrectQuestion =  "Question Seven ?"),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

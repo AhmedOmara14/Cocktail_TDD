@@ -6,7 +6,8 @@ import org.junit.Test
 class QuestionTest {
     @Test
     fun test_WhenAddCorrectAnswer_returnTrue() {
-        val question = Question("Correct", "InCorrect", "Q1")
+        val question =
+            Question(correctQuestion = "Correct", inCorrectQuestion = "InCorrect", question = "Q1")
 
         question.answeredQuestion = "Correct"
 
@@ -15,7 +16,7 @@ class QuestionTest {
 
     @Test
     fun test_WhenAddInCorrectAnswer_returnFalse() {
-        val question = Question("Correct", "InCorrect", "Q1")
+        val question = Question(correctQuestion = "Correct", inCorrectQuestion =  "InCorrect", question = "Q1")
 
         question.answeredQuestion = "Test"
 
