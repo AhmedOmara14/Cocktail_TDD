@@ -18,6 +18,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -69,7 +70,7 @@ class CocktailDaoTest {
     }
 
     @Test
-    fun `testSaveQuestion`() {
+    fun `testSaveQuestion_UsingArgumentCaptor`() {
         val mockQuestion = Question(
             question = "Q",
             correctQuestion = "A",
@@ -87,8 +88,6 @@ class CocktailDaoTest {
         Thread.sleep(1000)
 
         val captor = argumentCaptor<List<Question>>()
-
-        // Verify that onChanged was called and capture the argument
         verify(mockObserver).onChanged(captor.capture())
 
         // Retrieve the captured argument
@@ -97,5 +96,47 @@ class CocktailDaoTest {
         // Assert that the captured list is not null and contains the mock question
         assertNotNull(capturedArgument)
         assertTrue(capturedArgument.isNotEmpty())
+    }
+
+    @Test
+    fun `testSaveQuestion_UsingValidationOnArgument`() {
+        val mockQuestion = Question(
+            question = "Q",
+            correctQuestion = "A",
+            inCorrectQuestion = "B"
+        )
+
+        cocktailDao.saveQuestion(mockQuestion)
+
+        val mockObserver = mock<Observer<List<Question>>>()
+
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            cocktailDao.getAllQuestions().observeForever(mockObserver)
+        }
+
+        Thread.sleep(1000)
+
+        verify(mockObserver).onChanged(argThat { questions ->
+            questions[0].question == mockQuestion.question
+        })
+    }
+
+    @Test
+    fun `testFindQuestionById`() {
+        val q1 = Question(1, "a1", "b1", "Q1")
+        val q2 = Question(2, "a2", "b2", "Q2")
+
+        cocktailDao.saveQuestion(q1)
+        cocktailDao.saveQuestion(q2)
+
+        val mockObserver = mock<Observer<Question>>()
+
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            cocktailDao.getQuestionById(q1.id).observeForever(mockObserver)
+        }
+
+        verify(mockObserver).onChanged(argThat { question ->
+            question.question == q1.question
+        })
     }
 }

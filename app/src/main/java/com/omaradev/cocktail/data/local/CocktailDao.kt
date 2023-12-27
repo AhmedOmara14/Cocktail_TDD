@@ -16,7 +16,7 @@ interface CocktailDao {
     @Query("SELECT * FROM Question")
     fun getAllQuestions(): LiveData<List<Question>>
 
-    @Query("SELECT * FROM Question WHERE id != :id")
+    @Query("SELECT * FROM Question WHERE id = :id")
     fun getQuestionById(id: Int): LiveData<Question>
 }
 
