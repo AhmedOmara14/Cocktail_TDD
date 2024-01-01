@@ -85,4 +85,20 @@ dependencies {
 
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+
+    //MockWebServer
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+
+    //Koin
+    testImplementation("io.insert-koin:koin-test:3.5.0")
+    testImplementation("io.insert-koin:koin-test-junit4:3.5.0")
+    androidTestImplementation("io.insert-koin:koin-test:3.5.0")
+    androidTestImplementation("io.insert-koin:koin-test-junit4:3.5.0")
+
+    implementation("io.reactivex.rxjava2:rxjava:2.2.9")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0")
 }
