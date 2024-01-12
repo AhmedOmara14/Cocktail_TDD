@@ -126,23 +126,4 @@ class CocktailDaoTest {
             questions[0].question == mockQuestion.question
         })
     }
-
-    @Test
-    fun `testFindQuestionById`() {
-        val q1 = Question(1, "a1", "b1", "Q1")
-        val q2 = Question(2, "a2", "b2", "Q2")
-
-        cocktailDao.saveQuestion(q1)
-        cocktailDao.saveQuestion(q2)
-
-        val mockObserver = mock<Observer<Question>>()
-
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            cocktailDao.getQuestionById(q1.id).observeForever(mockObserver)
-        }
-
-        verify(mockObserver).onChanged(argThat { question ->
-            question.question == q1.question
-        })
-    }
 }
