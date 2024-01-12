@@ -1,36 +1,23 @@
 <!-- Cocktail Quiz App Repository -->
 
 <h1>Overview</h1>
-<p>This repository houses the source code for a straightforward Android quiz app centered around the theme of cocktails. The primary focus of this project lies in the diligent application of Test-Driven Development (TDD) practices, ensuring robust code quality and functionality.</p>
+<p> This test suite focuses on applying testing at the network layer, specifically targeting the <code>QuestionsService</code> interface. This service is responsible for communication with a remote API to fetch responses. The tests utilize the MockWebServer library, allowing for the simulation of network responses to verify the correct behavior of the service.</p>
 
-<h2>Test-Driven Development (TDD)</h2>
-<p>A fundamental aspect of this project is the implementation of Test-Driven Development (TDD) principles. Each module's tests have been meticulously crafted before the actual implementation, ensuring a solid foundation and correctness in the codebase. The tests are thoughtfully distributed across various files:</p>
-<ul>
-  <li>MainViewModelTest</li>
-  <li>CocktailRepositoryImplTest</li>
-  <li>GameTest</li>
-  <li>QuestionTest</li>
-  <li>ScoreTest</li>
-</ul>
 
-<p>These test files collectively cover a wide array of aspects related to the application logic, fostering a reliable and stable app environment.</p>
+<p> The primary objectives of the test cases are as follows:</p>
 
-<h2>Testing Focus</h2>
-<p>The testing coverage focuses on key components:</p>
-<ul>
-  <li><strong>Shared Preferences:</strong> Utilizes Mockito for testing CocktailRepositoryImpl, ensuring correct interactions with shared preferences.</li>
-  <li><strong>LiveData:</strong> Tests in MainViewModelTest focus on LiveData observations, ensuring the ViewModel updates appropriately.</li>
-  <li><strong>ViewModel:</strong> MainViewModelTest covers ViewModel functionality, testing methods for initializing the game, loading questions, and handling answers.</li>
-  <li><strong>Model Classes:</strong> GameTest, QuestionTest, and ScoreTest validate the logic within the game-related model classes.</li>
-</ul>
+* Enqueues a mock response with a predefined JSON script representing a list of questions.
+* Verifies that the service makes a network request with the expected URL.
+* Enqueues a mock response to simulate a successful request.
+* Asserts that no errors occurred during the network request.
 
 <h2>Testing Tools</h2>
 <p>The project leverages the following testing tools to achieve a comprehensive testing strategy:</p>
 <ul>
-  <li><strong>JUnit:</strong> A widely adopted testing framework for Java and Kotlin. JUnit provides annotations for test definition and assertions for validating expected outcomes.</li>
   <li><strong>Mockito:</strong> An influential mocking framework that facilitates the creation of mock objects in unit tests. This aids in isolating components and simulating behavior, contributing to more effective and thorough testing.</li>
+   <li><strong>Mock Web Server:</strong> mock responses from network request.</li>
 </ul>
 
-<p>Feel free to explore the test files and dive into the TDD-driven development approach that underlies the Cocktail Quiz App. Your contributions and feedback are highly valued.</p>
+<p>Your contributions and feedback are highly valued.</p>
 
 <p><strong>Happy coding! 🍹🧠</strong></p>
