@@ -5,7 +5,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 
 interface QuestionsService {
-    @GET("random_joke.json")
+    @GET("questions.json")
     fun getAllQuestions(): Single<List<QuestionApi>>
 
 }

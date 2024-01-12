@@ -48,6 +48,9 @@ class CocktailDaoTest {
 
         cocktailDao = cocktailDatabase.cocktailDao()
 
+        /**
+         * Using ArgumentCaptor to Capture Changes
+         */
         captor = ArgumentCaptor.forClass(List::class.java as Class<List<Question>>)
     }
 
@@ -87,6 +90,9 @@ class CocktailDaoTest {
 
         Thread.sleep(1000)
 
+        /**
+         * ArgumentCaptor to capture the argument passed to onChanged method when the observer is notified.
+         */
         val captor = argumentCaptor<List<Question>>()
         verify(mockObserver).onChanged(captor.capture())
 

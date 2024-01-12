@@ -13,15 +13,19 @@ class QuestionsServiceTest {
     private val userId = 1
     private val id = 1
     private val title = "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-    private val body =
-        "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto"
-    private val testJson = """{
-        "userId": $userId,
-        "id": $id,
-        "title": $title",
-        "body": $body
-    }"""
+    private val body = "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum"
 
+    private val testJson = """[{
+    "userId": $userId,
+    "id": $id,
+    "title": "$title",
+    "body": "$body"
+}]"""
+
+
+    /**
+     * mockWebServer mock responses from network requests
+     */
     @get:Rule
     val mockWebServer = MockWebServer()
 
@@ -37,11 +41,16 @@ class QuestionsServiceTest {
 
     @Test
     fun test_getAllQuestions() {
+        //use testJson to be a script a response
+        //mockWebServer to enqueue a response
+
         mockWebServer.enqueue(
             MockResponse().setBody(testJson).setResponseCode(200)
         )
 
         val testObserver = questionsService.getAllQuestions().test()
 
+        val response = listOf<QuestionApi>(QuestionApi(body, id, title, userId))
+        testObserver.assertValues(response)
     }
 }
