@@ -1,7 +1,10 @@
 package com.omaradev.cocktail.data.repository
 
 import android.content.SharedPreferences
+import com.omaradev.cocktail.data.remote.QuestionsService
+import com.omaradev.cocktail.domain.model.QuestionApi
 import com.omaradev.cocktail.domain.repository.CocktailRepository
+import io.reactivex.Single
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -20,6 +23,9 @@ class CocktailRepositoryImplTest {
     private lateinit var sharedPreferences: SharedPreferences
 
     @Mock
+    private lateinit var questionsService: QuestionsService
+
+    @Mock
     private lateinit var sharedPreferencesEditor: SharedPreferences.Editor
 
     private lateinit var repository: CocktailRepository
@@ -27,7 +33,7 @@ class CocktailRepositoryImplTest {
     @Before
     fun setUp() {
         whenever(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor)
-        repository = CocktailRepositoryImpl(sharedPreferences,null)
+        repository = CocktailRepositoryImpl(sharedPreferences, null, questionsService)
     }
 
     @Test
@@ -51,8 +57,25 @@ class CocktailRepositoryImplTest {
         verify(sharedPreferences).getInt(any(), any())
     }
 
+    @Test
+    fun test_getAllQuestionsWithEmitQuestions() {
+        val question = QuestionApi("body", 1, "title", 1)
+
+        whenever(questionsService.getAllQuestions()).thenReturn(
+            Single.just(
+                listOf<QuestionApi>(
+                    question
+                )
+            )
+        )
+
+        val testObserver = repository.getAllQuestionsFromApi()?.test()
+
+        testObserver?.assertValues(listOf(question))
+    }
+
     @After
-    fun tearsDown(){
+    fun tearsDown() {
         Mockito.clearAllCaches()
     }
 }

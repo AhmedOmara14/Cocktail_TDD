@@ -3,12 +3,14 @@ package com.omaradev.cocktail.data.repository
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import com.omaradev.cocktail.data.local.CocktailDao
+import com.omaradev.cocktail.data.remote.QuestionsService
 import com.omaradev.cocktail.domain.model.Question
 import com.omaradev.cocktail.domain.repository.CocktailRepository
 
-class CocktailRepositoryImpl(
+open class CocktailRepositoryImpl(
     private val sharedPreferences: SharedPreferences?,
-    private val cocktailDao: CocktailDao?=null
+    private val cocktailDao: CocktailDao? = null,
+    private val questionsService: QuestionsService? = null
 ) : CocktailRepository {
     private val highScoreKey = "HIGH_SCORE"
     override fun saveScore(score: Int) {
@@ -26,7 +28,9 @@ class CocktailRepositoryImpl(
         cocktailDao?.saveQuestion(question)
     }
 
-    override fun getAllQuestions(): LiveData<List<Question>>? =cocktailDao?.getAllQuestions()
+    override fun getAllQuestions(): LiveData<List<Question>>? = cocktailDao?.getAllQuestions()
+
+    override fun getAllQuestionsFromApi() = questionsService?.getAllQuestions()
 
 
 }
